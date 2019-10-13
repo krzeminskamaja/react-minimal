@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button'
 import { render } from 'react-dom'
 import App from './MyApp'
 import AppTitle from './AppTitle'
-import * as data from '/Users/Maya/studia/trzecirok/react/Lab1/example.json'
+//import * as data from '/Users/Maya/studia/trzecirok/react/Lab1/example.json'
 import 'bootstrap/dist/css/bootstrap.css';
 
 
@@ -21,11 +21,7 @@ class Students extends React.Component{
     click1(){
         return(
             <div>
-                {data.map((detail,index)=>{
-                    return <div>
-                        <p>{detail.teacherName}</p>
-                    </div>
-                })}
+                
             </div>
         )
     }
