@@ -23,11 +23,13 @@ class Students extends React.Component{
         this.updateNumber1 = this.updateNumber1.bind(this);
         this.updateNumber2 = this.updateNumber2.bind(this);
         this.createArray = this.createArray.bind(this);
+        this.process = this.process.bind(this);
         this.state = {
             input1: 0,
             input2: 0,
             array: [],
-            howManyRenders: 0
+            howManyRenders: 0,
+            sarray: []
         }
     }
     click1(){
@@ -46,7 +48,6 @@ class Students extends React.Component{
                 console.timeEnd(' render - ' + this.state.howManyRenders + ' -');
                 this.state.howManyRenders++;
             });
-            
             return;
         }
         console.time(' render - ' + this.state.howManyRenders + ' -');
@@ -56,6 +57,7 @@ class Students extends React.Component{
         });
     }
     updateNumber1 = (e) =>{
+        
         // If the current value passes the validity test then apply that to state
         if (e.target.validity.valid ){ 
             this.setState({input1: e.target.value})
@@ -65,6 +67,7 @@ class Students extends React.Component{
             this.createArray()
         }
         else console.log("Not a number")
+        this.setState({sarray: []})
       }
       updateNumber2 = (e) => {
         if (e.target.validity.valid){ 
@@ -74,7 +77,24 @@ class Students extends React.Component{
             this.createArray()
         }
         else console.log('Not a number')
+        this.setState({sarray: []})
       }
+
+    process=()=>{
+        if(this.state.array.length ==0)
+        {
+            return;
+        }
+            console.time('render ' + this.howManyRenders);
+            this.setState({sarray: this.state.array.map((val) => Math.sqrt(val))}, () => {
+                console.timeEnd('render ' + this.howManyRenders);
+                this.howManyRenders++;
+                console.log(this.state.sarray);
+            });
+        
+            
+        //console.log(this.state.sarray);
+    }
     render(){
         return(
             <div>
@@ -89,6 +109,8 @@ class Students extends React.Component{
                     {this.state.array.toString()}
                     
                 </div>
+                <Button variant="success" block onClick={this.process}>Process array</Button>
+                <p>{this.state.sarray.toString().split(',').join('\n')}</p>
             </div>
         );
     }
