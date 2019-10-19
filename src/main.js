@@ -5,7 +5,7 @@ import App from './MyApp'
 import AppTitle from './AppTitle'
 //import * as data from '/Users/Maya/studia/trzecirok/react/Lab1/example.json'
 import 'bootstrap/dist/css/bootstrap.css';
-
+import { get } from 'https';
 
 render(<App />, document.getElementById('reactinjectedhere'))
 render(<AppTitle />, document.getElementById('lab1ex1'))
@@ -26,7 +26,8 @@ class Students extends React.Component{
         this.state = {
             input1: 0,
             input2: 0,
-            array: []
+            array: [],
+            howManyRenders: 0
         }
     }
     click1(){
@@ -39,26 +40,37 @@ class Students extends React.Component{
     createArray(){
         if(this.state.input1  > this.state.input2 || this.state.input1 < 0 )
         {
-            console.log("Wrong input");
+            //console.log("Wrong input");
+            console.time(' render - ' + this.state.howManyRenders + ' -');
+            this.setState({array: []},() => {
+                console.timeEnd(' render - ' + this.state.howManyRenders + ' -');
+                this.state.howManyRenders++;
+            });
+            
             return;
         }
-        this.setState({array: new Array(this.state.input2-this.state.input1+1).fill(0).map((val,idx) => val = parseInt(this.state.input1) + idx)});
+        console.time(' render - ' + this.state.howManyRenders + ' -');
+        this.setState({array: new Array(this.state.input2-this.state.input1+1).fill(0).map((val,idx) => val = parseInt(this.state.input1) + idx)},() => {
+            console.timeEnd(' render - ' + this.state.howManyRenders + ' -');
+            this.state.howManyRenders++;
+        });
     }
     updateNumber1 = (e) =>{
         // If the current value passes the validity test then apply that to state
         if (e.target.validity.valid ){ 
-
             this.setState({input1: e.target.value})
-            console.log(e.target.value)
-            console.log(this.state.input2)
+
+            console.log('Value changed a: ' + e.target.value)
+            //console.log(this.state.input2)
             this.createArray()
         }
         else console.log("Not a number")
       }
       updateNumber2 = (e) => {
         if (e.target.validity.valid){ 
+            console.time();
             this.setState({input2: e.target.value})
-            console.log(e.target.value)
+            console.log('Value changed b: ' + e.target.value)
             this.createArray()
         }
         else console.log('Not a number')
